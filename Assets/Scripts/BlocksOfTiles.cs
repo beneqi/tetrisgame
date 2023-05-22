@@ -1,18 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.Tilemaps;
+using System;
 using UnityEngine;
 
-public class BlocksOfTiles : MonoBehaviour
+public enum BlockOfTiles
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    First,
+    Second,
+    Third,
+    Fourth,
+    Fifth,
+    Sixth,
+    Seventh,
+}
 
-    // Update is called once per frame
-    void Update()
+[Serializable]
+public struct BlockOfTileInfos
+{
+    public BlockOfTiles blockOfTiles;
+    public Tile tile;
+    public Vector2Int[] cells { get; private set; }
+
+    public void Init()
     {
-        
+        this.cells = Info.Cells[this.blockOfTiles];
     }
 }
