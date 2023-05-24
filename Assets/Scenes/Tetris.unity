@@ -447,6 +447,7 @@ MonoBehaviour:
   - blockOfTiles: 6
     tile: {fileID: 11400000, guid: 5e60d923893dad5469bd200a56f619dd, type: 2}
   blockPos: {x: -1, y: 8, z: 0}
+  boundarySize: {x: 10, y: 20}
 --- !u!114 &337619112
 MonoBehaviour:
   m_ObjectHideFlags: 0
