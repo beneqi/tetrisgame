@@ -41,8 +41,22 @@ public class Panel : MonoBehaviour
         BlockOfTileInfos blockOfTileInfos = this.blockOfTiles[rand];
 
         this.activePiece.Init(this, this.blockPos, blockOfTileInfos);
-        Set(this.activePiece);
+        if (IsValidPos(activePiece, blockPos))
+        {
+            Set(activePiece);
+        }
+        else
+        {
+            GameOver();
+        }
 
+        //Set(this.activePiece);
+
+    }
+
+    public void GameOver()
+    {
+            this.tilemap.ClearAllTiles();
     }
 
     public void Set(Piece piece)
@@ -91,19 +105,21 @@ public class Panel : MonoBehaviour
                 LineClear(line);
             }
             else
+            {
                 line++;
+            }
         }
     }
 
     private void LineClear(int line)
     {
-        RectInt boundary = Boundary;
+        RectInt boundary = this.Boundary;
 
         
         for (int column = boundary.xMin; column < boundary.xMax; column++)
         {
             Vector3Int position = new Vector3Int(column, line, 0);
-            tilemap.SetTile(position, null);
+            this.tilemap.SetTile(position, null);
         }
 
         while (line < boundary.yMax)
@@ -111,10 +127,10 @@ public class Panel : MonoBehaviour
             for (int column = boundary.xMin; column < boundary.xMax; column++)
             {
                 Vector3Int position = new Vector3Int(column, line + 1, 0);
-                TileBase above = tilemap.GetTile(position);
+                TileBase above = this.tilemap.GetTile(position);
 
                 position = new Vector3Int(column, line, 0);
-                tilemap.SetTile(position, above);
+                this.tilemap.SetTile(position, above);
             }
 
             line++;
@@ -123,14 +139,14 @@ public class Panel : MonoBehaviour
 
     public bool IsLineFull(int line)
     {
-        RectInt boundary = Boundary;
+        RectInt boundary = this.Boundary;
 
         for (int columnumn = boundary.xMin; columnumn < boundary.xMax; columnumn++)
         {
             Vector3Int position = new Vector3Int(columnumn, line, 0);
 
             
-            if (!tilemap.HasTile(position))
+            if (!this.tilemap.HasTile(position))
             {
                 return false;
             }
