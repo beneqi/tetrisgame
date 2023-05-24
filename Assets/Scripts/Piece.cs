@@ -9,12 +9,20 @@ public class Piece : MonoBehaviour
     public BlockOfTileInfos info { get; private set; }
     public Vector3Int[] cells { get; private set; }
     public int RotationValue { get; private set; }
+    public float paceDelay = 1.0f;
+    public float lockDelay = 0.5f;
+    public float paceTime, lockTime;
+
+
     public void Init(Panel panel, Vector3Int position, BlockOfTileInfos info)
     {
         this.RotationValue = 0;
         this.panel = panel;
         this.position = position;
         this.info = info;
+        this.paceTime = Time.time + this.paceDelay;
+        this.lockTime = 0.0f;
+
 
         if(this.cells == null)
             this.cells = new Vector3Int[info.cells.Length];
@@ -29,6 +37,8 @@ public class Piece : MonoBehaviour
     private void Update()
     {
         this.panel.Clear(this);
+        this.lockTime += Time.deltaTime;
+           
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             Rotation(-1);
@@ -70,7 +80,35 @@ public class Piece : MonoBehaviour
             Rotation(1);
         }*/
 
+        if (Time.time >= this.paceTime)
+            Pace();
+
         this.panel.Set(this);
+    }
+
+    private void Pace()
+    {
+        this.paceTime = Time.time + this.paceDelay;
+        Move(Vector2Int.down);
+
+        if (this.lockTime >= this.lockDelay)
+            Lock();
+    }
+
+    private void Lock()
+    {
+        this.panel.Set(this);
+        this.panel.ClearLines();
+        this.panel.GenerateBlocks();
+    }
+    private void HardDrop()
+    {
+        while (Move(Vector2Int.down))
+        {
+            continue;
+        }
+
+        Lock();
     }
 
     private bool Move(Vector2Int transportation)
@@ -84,6 +122,7 @@ public class Piece : MonoBehaviour
         if (valid)
         {
             this.position = newPos;
+            this.lockTime = 0.0f;
         }
 
         return valid;
@@ -170,4 +209,6 @@ public class Piece : MonoBehaviour
         return Wrap(wallKickIndex, 0, this.info.wallKicks.GetLength(0));
 
     }
+
+ 
 }

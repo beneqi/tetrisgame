@@ -79,4 +79,64 @@ public class Panel : MonoBehaviour
 
         return true;
     }
+    public void ClearLines()
+    {
+        RectInt boundary = this.Boundary;
+        int line = boundary.yMin;
+
+        while(line < boundary.yMax)
+        {
+            if (IsLineFull(line))
+            {
+                LineClear(line);
+            }
+            else
+                line++;
+        }
+    }
+
+    private void LineClear(int line)
+    {
+        RectInt boundary = Boundary;
+
+        
+        for (int column = boundary.xMin; column < boundary.xMax; column++)
+        {
+            Vector3Int position = new Vector3Int(column, line, 0);
+            tilemap.SetTile(position, null);
+        }
+
+        while (line < boundary.yMax)
+        {
+            for (int column = boundary.xMin; column < boundary.xMax; column++)
+            {
+                Vector3Int position = new Vector3Int(column, line + 1, 0);
+                TileBase above = tilemap.GetTile(position);
+
+                position = new Vector3Int(column, line, 0);
+                tilemap.SetTile(position, above);
+            }
+
+            line++;
+        }
+    }
+
+    public bool IsLineFull(int line)
+    {
+        RectInt boundary = Boundary;
+
+        for (int columnumn = boundary.xMin; columnumn < boundary.xMax; columnumn++)
+        {
+            Vector3Int position = new Vector3Int(columnumn, line, 0);
+
+            
+            if (!tilemap.HasTile(position))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 }
