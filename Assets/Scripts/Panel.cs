@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
+using System;
+using System.Threading.Tasks;
 
 public class Panel : MonoBehaviour
 {
@@ -9,7 +12,10 @@ public class Panel : MonoBehaviour
     public Tilemap tilemap { get; private set; }
     public Piece activePiece { get; private set; }
     public Vector3Int blockPos;
+    public EndMenu endMenu;
     public Vector2Int boundarySize = new Vector2Int(10, 20);
+    [SerializeField] private AudioSource clearLinesEffect;
+   
 
     public RectInt Boundary
     {
@@ -36,7 +42,7 @@ public class Panel : MonoBehaviour
 
     public void GenerateBlocks()
     {
-        int rand = Random.Range(0, this.blockOfTiles.Length);
+        int rand = UnityEngine.Random.Range(0, this.blockOfTiles.Length);
 
         BlockOfTileInfos blockOfTileInfos = this.blockOfTiles[rand];
 
@@ -46,7 +52,7 @@ public class Panel : MonoBehaviour
             Set(activePiece);
         }
         else
-        {
+        { 
             GameOver();
         }
 
@@ -56,7 +62,10 @@ public class Panel : MonoBehaviour
 
     public void GameOver()
     {
-            this.tilemap.ClearAllTiles();
+        
+        this.tilemap.ClearAllTiles();
+        SceneManager.LoadScene("End Screen");
+
     }
 
     public void Set(Piece piece)
@@ -102,6 +111,8 @@ public class Panel : MonoBehaviour
         {
             if (IsLineFull(line))
             {
+                clearLinesEffect.Play();
+
                 LineClear(line);
             }
             else
