@@ -56,7 +56,6 @@ public class Panel : MonoBehaviour
             GameOver();
         }
 
-        //Set(this.activePiece);
 
     }
 
@@ -112,6 +111,7 @@ public class Panel : MonoBehaviour
             if (IsLineFull(line))
             {
                 clearLinesEffect.Play();
+                ScoreManager.instance.AddPoint();
 
                 LineClear(line);
             }

@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class EndMenu : MonoBehaviour
 {
-    [SerializeField] private AudioSource gameOverEffect;
+   
+    
     public void QuitGame()
     { 
         Application.Quit();
@@ -14,4 +16,5 @@ public class EndMenu : MonoBehaviour
     {
         SceneManager.LoadScene("Start Screen");
     }
+    
 }
