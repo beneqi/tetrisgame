@@ -9,6 +9,8 @@ The simple source code written in Unity 2021.3 {C#}
 
  - MouseRighButton: Rotates tiles to right
  - MouseLeftButton: Rotates tiles to left
+# Play Here:
+- link: https://dualipa.itch.io/tetris
 
 
 # Screen Shots
